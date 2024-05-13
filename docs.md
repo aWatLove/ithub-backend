@@ -1018,8 +1018,11 @@ output:
 input: `resume_id`
 ```json
 {
-	"title":"new resume name",
-	"html_info":"new <html>"
+  "title":"new resume name",
+  "html_info":"new <html>",
+  "email":"email from user",
+  "telegram":"telegram from user",
+  "link":"link from user"
 }
 ```
 output:
