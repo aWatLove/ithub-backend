@@ -11,6 +11,7 @@ import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.TeamService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,5 +41,9 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getAllTeams(null));
     }
 
+    @GetMapping("/{id}/folowers")
+    public ResponseEntity<?> getTeamFolowers(@PathVariable Long id) {
+        return ResponseEntity.ok(teamService.getTeamFolowers(id));
+    }
 
 }

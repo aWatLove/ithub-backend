@@ -513,7 +513,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -548,7 +548,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -590,7 +590,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -625,7 +625,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -743,6 +743,7 @@ output:
 			"project_id":0,
 			"title":"patchtitle",
 			"description":"patch description",
+            "isLiked": false,
 			"likes_count":2,
 			"created_at":"2018-03-12T13:37:27+00:00"
 		},
@@ -751,6 +752,7 @@ output:
 			"project_id":0,
 			"title":"patchtitle",
 			"description":"patch description",
+            "isLiked": false,
 			"likes_count":2,
 			"created_at":"2018-03-12T13:37:27+00:00"
 		},
@@ -759,6 +761,7 @@ output:
 			"project_id":0,
 			"title":"patchtitle",
 			"description":"patch description",
+            "isLiked": false,
 			"likes_count":2,
 			"created_at":"2018-03-12T13:37:27+00:00"
 		}

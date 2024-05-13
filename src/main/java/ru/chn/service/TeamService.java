@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
 import ru.chn.dto.ProjectPreviewDTO;
 import ru.chn.dto.TeamMemberDTO;
 import ru.chn.dto.TeamPreviewDTO;
+import ru.chn.dto.UserPreviewDTO;
 import ru.chn.dto.response.TeamDetailsResponse;
+import ru.chn.dto.response.TeamFolowersResponse;
 import ru.chn.dto.response.TeamPreviewResponse;
-import ru.chn.model.Project;
-import ru.chn.model.Team;
-import ru.chn.model.User;
-import ru.chn.model.UsersTeam;
+import ru.chn.model.*;
 import ru.chn.repository.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -77,5 +76,23 @@ public class TeamService {
         return tpr;
     }
 
-
+    public TeamFolowersResponse getTeamFolowers(Long teamId) {
+        List<UsersTeamsFolows> utfs = utFolowRepo.findAllByTeamId(teamId);
+        if (utfs.isEmpty()) {
+            return new TeamFolowersResponse();
+        }
+        TeamFolowersResponse tfr = new TeamFolowersResponse();
+        for (UsersTeamsFolows ut: utfs) {
+            User user = userRepo.findUserById(ut.getUserId()).orElse(null);
+            if (user == null) {
+                continue;
+            }
+            UserPreviewDTO upd = new UserPreviewDTO();
+            upd.setId(user.getId());
+            upd.setUsername(user.getUsername());
+            upd.setAvatar(user.getAvatar());
+            tfr.getFolowers().add(upd);
+        }
+        return tfr;
+    }
 }
