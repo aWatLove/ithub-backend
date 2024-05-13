@@ -14,6 +14,7 @@ public class Resume {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonProperty("user_id")
     private Long userId;
     private String title;
     @JsonProperty("html_info")

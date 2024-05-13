@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class ResumePreviewDTO {
     private Long id;
+    @JsonProperty("user_id")
     private Long userId;
     private String title;
     @JsonProperty("html_info")
