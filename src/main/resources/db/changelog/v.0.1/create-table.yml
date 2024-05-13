@@ -202,7 +202,7 @@ databaseChangeLog:
               - column:
                   name: "folowers_count"
                   type: "BIGINT"
-                  defaultValueNumeric: "0" #TODO: чекнуть будет ли работать это
+                  defaultValueNumeric: "0"
                   constraints:
                     nullable: false
               - column:
