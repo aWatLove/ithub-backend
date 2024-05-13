@@ -75,6 +75,7 @@ public class WebSecurityConfig {
                 .antMatchers("/api/resume/**").permitAll()
                 .antMatchers("/api/claim/**").permitAll()
                 .antMatchers("/api/tag/**").permitAll()
+                .antMatchers("/api/docs").permitAll()
                 .anyRequest().authenticated();
         http.authenticationProvider(authenticationProvider());
 

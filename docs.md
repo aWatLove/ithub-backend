@@ -153,6 +153,7 @@ output:
 {
 	"id":0,
 	"name":"coolTeam0",
+    "description":"sdgsdg",
 	"folowers_count":4,
 	"avatar":"/avatars/teams/0.jpg",
 	"owner_id":0,
