@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface UsersTeamsRepository extends JpaRepository<UsersTeam, Long> {
     List<UsersTeam> findUsersTeamsByUserId(Long userId);
+    List<UsersTeam> findUsersTeamsByTeamId(Long teamId);
 }

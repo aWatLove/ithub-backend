@@ -3,7 +3,7 @@ package ru.chn.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import ru.chn.dto.TeamPreviewDTO;
+import ru.chn.dto.UsersTeamPreviewDTO;
 import ru.chn.dto.UserPreviewDTO;
 import ru.chn.dto.request.UserUpdateRequest;
 import ru.chn.dto.response.UserDetailResponse;
@@ -55,7 +55,7 @@ public class UserService {
             if (team == null) {
                 continue;
             }
-            TeamPreviewDTO tp = new TeamPreviewDTO();
+            UsersTeamPreviewDTO tp = new UsersTeamPreviewDTO();
             tp.setId(team.getId());
             tp.setName(team.getName());
             tp.setAvatar(team.getAvatar());

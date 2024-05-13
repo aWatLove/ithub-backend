@@ -52,6 +52,11 @@ public class JwtUtils {
         return null;
     }
 
+    public boolean existAuthToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        return (authHeader != null && !authHeader.isEmpty());
+    }
+
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
