@@ -1,6 +1,9 @@
 package ru.chn.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +24,10 @@ public class User {
     private String username;
     private String avatar;
     private String firstname;
+
     private String lastname;
     private String password;
+    @JsonProperty("bio_info")
     private String bioInfo;
     private String email;
     private String telegram;

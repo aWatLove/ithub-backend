@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.chn.dto.response.MessageResponse;
+import ru.chn.dto.response.UserDetailResponse;
 import ru.chn.dto.response.UsersPreviewsResponse;
 import ru.chn.service.UserService;
 
@@ -19,7 +21,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok("ok");
+        UserDetailResponse resp = userService.getUserDetailById(id);
+        if (resp == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("user not found with id: " + id));
+        }
+
+        return ResponseEntity.ok(resp);
     }
 
 
