@@ -218,21 +218,21 @@ output:
 			"name":"coolTeamName0",
 			"avatar":"/avatars/teams/0.jpg",
 			"folowers_count":3,
-			"isFolowed":true
+			"isFolow":true
 		},
 		{
 			"id":1,
 			"name":"coolTeamName1",
 			"avatar":"/avatars/teams/1.jpg",
 			"folowers_count":1,
-			"isFolowed":true
+			"isFolow":true
 		},
 		{
 			"id":2,
 			"name":"coolTeamName2",
 			"avatar":"/avatars/teams/2.jpg",
 			"folowers_count":5,
-			"isFolowed":false
+			"isFolow":false
 		}
 	]
 }

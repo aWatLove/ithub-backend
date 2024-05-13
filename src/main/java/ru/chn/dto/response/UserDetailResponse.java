@@ -3,7 +3,7 @@ package ru.chn.dto.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import ru.chn.dto.TeamPreviewDTO;
+import ru.chn.dto.UsersTeamPreviewDTO;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class UserDetailResponse {
     private String telegram;
     private String link;
 
-    private List<TeamPreviewDTO> teams;
+    private List<UsersTeamPreviewDTO> teams;
 
     public UserDetailResponse(Long id, String username, String avatar, String firstname, String lastname, String bioInfo, String email, String telegram, String link) {
         this.id = id;
