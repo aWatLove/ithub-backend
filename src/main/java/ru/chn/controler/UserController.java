@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.chn.dto.request.UserUpdateRequest;
 import ru.chn.dto.response.MessageResponse;
 import ru.chn.dto.response.UserDetailResponse;
 import ru.chn.dto.response.UsersPreviewsResponse;
@@ -56,5 +54,12 @@ public class UserController {
         UsersPreviewsResponse upr = new UsersPreviewsResponse();
         upr.setUsers(userService.getAllUsers());
         return ResponseEntity.ok(upr);
+    }
+
+    @PutMapping
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> updateUserinfo(@RequestBody UserUpdateRequest body, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        return ResponseEntity.ok(userService.updateUserInfo(userId, body));
     }
 }
