@@ -1,4 +1,4 @@
-package ru.chn.controler;
+package ru.chn.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +24,14 @@ public class ResumeController {
 
     //post Resume
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createResume(@RequestBody ResumePostRequest body, HttpServletRequest request){
         Long id = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
         return ResponseEntity.ok(resumeService.createResume(body, id));
     }
     //get all Resumes
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> getAllResumes(HttpServletRequest request){
         ResumePreviewsResponse rpr = new ResumePreviewsResponse();
         Long id = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
@@ -54,10 +54,11 @@ public class ResumeController {
     }
 
     // delete Resume
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResume(@PathVariable Long id){
         resumeService.deleteResumeByResumeId(id);
-        return ResponseEntity.ok("Deleted");
+        return ResponseEntity.ok().build();
     }
 
 }

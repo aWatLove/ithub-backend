@@ -1,4 +1,4 @@
-package ru.chn.controler;
+package ru.chn.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

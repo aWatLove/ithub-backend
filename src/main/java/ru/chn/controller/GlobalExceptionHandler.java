@@ -1,4 +1,4 @@
-package ru.chn.controler;
+package ru.chn.controller;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

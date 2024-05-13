@@ -1,4 +1,4 @@
-package ru.chn.controler;
+package ru.chn.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

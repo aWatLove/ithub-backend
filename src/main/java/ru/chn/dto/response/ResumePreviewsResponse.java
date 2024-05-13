@@ -1,6 +1,5 @@
 package ru.chn.dto.response;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.chn.dto.ResumePreviewDTO;
