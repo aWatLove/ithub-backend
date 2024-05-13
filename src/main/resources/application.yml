@@ -6,8 +6,8 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yml
   datasource:
     url: jdbc:postgresql://localhost:5432/it-hub-db
-    username: admin
-    password: password
+    username: postgres
+    password: postgres
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
