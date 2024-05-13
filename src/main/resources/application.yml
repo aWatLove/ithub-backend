@@ -1,0 +1,23 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/it-hub-db
+    username: admin
+    password: password
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate.ddl-auto: none
+    show-sql: true
+
+#  jackson:
+#    deserialization:
+#      READ_UNKNOWN_ENUM_VALUES_AS_NULL: true
+
+springdoc:
+  api-docs:
+    path: /api/docs
