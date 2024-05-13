@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+  it_hub:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file:
+      .env
+    networks:
+      - mynetwork
+
   db:
     image: postgres:latest
     restart: always
