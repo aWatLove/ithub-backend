@@ -1,18 +1,12 @@
-package ru.chn.model;
+package ru.chn.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-
 @Getter
 @Setter
-@Entity
-@Table(name = "resumes")
-public class Resume {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ResumePreviewDTO {
     private Long id;
     private Long userId;
     private String title;
