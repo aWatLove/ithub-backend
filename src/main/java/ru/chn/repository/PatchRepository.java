@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PatchRepository extends JpaRepository<Patch, Long> {
     List<Patch> findAllByProjectId(Long projectId);
+    void deleteAllByProjectId(Long projectId);
 }

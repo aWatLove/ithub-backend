@@ -13,4 +13,5 @@ public interface UserProjectLikesRepository extends JpaRepository<UserProjectLik
     boolean existsByUserIdAndProjectId(Long userId, Long projectId);
     List<UserProjectLikes> findAllByProjectId(Long projectId);
     Optional<UserProjectLikes> findByProjectIdAndUserId(Long projectId, Long userId);
+    void deleteByProjectId(Long projectId);
 }

@@ -114,4 +114,20 @@ public class ProjectController {
         projectService.likePatch(projectId, patchId, userId);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable Long projectId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        projectService.deleteProject(projectId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{projectId}/patch/{patchId}")
+    public ResponseEntity<?> deleteProject(@PathVariable Long projectId, @PathVariable Long patchId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        projectService.deletePatch(projectId, userId);
+        return ResponseEntity.ok().build();
+    }
 }

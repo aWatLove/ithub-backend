@@ -13,5 +13,6 @@ public interface UsersPatchesLikesRepository extends JpaRepository<UsersPatchesL
 
     boolean existsByUserIdAndPatchId(Long userId, Long patchId);
     Optional<UsersPatchesLikes> findByPatchIdAndUserId(Long patchId, Long userId);
+    void deleteAllByPatchId(Long patchId);
 
 }

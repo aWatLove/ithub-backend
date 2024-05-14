@@ -236,6 +236,7 @@ databaseChangeLog:
                   name: "project_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
               - column:
                   name: "title"
@@ -273,11 +274,13 @@ databaseChangeLog:
                   name: "user_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
               - column:
                   name: "project_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
 
   - changeSet:
@@ -299,11 +302,13 @@ databaseChangeLog:
                   name: "user_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
               - column:
                   name: "project_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
 
   - changeSet:
@@ -330,6 +335,7 @@ databaseChangeLog:
                   name: "patch_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
 
 
@@ -523,11 +529,13 @@ databaseChangeLog:
                   name: "project_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
               - column:
                   name: "tag_id"
                   type: "BIGINT"
                   constraints:
+                    deleteCascade: true
                     nullable: false
 
 
@@ -667,6 +675,7 @@ databaseChangeLog:
             baseTableName: "projects_tags"
             baseColumnNames: "project_id"
             constraintName: "fk_projects_tags_projects"
+            deleteCascade: true
             referencedTableName: "projects"
             referencedColumnNames: "id"
         - addForeignKeyConstraint:

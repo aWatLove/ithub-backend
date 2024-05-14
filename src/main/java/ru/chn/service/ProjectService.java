@@ -15,6 +15,7 @@ import ru.chn.repository.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -212,7 +213,7 @@ public class ProjectService {
         return ulResp;
     }
 
-    public ProjectPatchesResponse getAllPatchByProjectId(Long projectId){
+    public ProjectPatchesResponse getAllPatchByProjectId(Long projectId) {
         if (!repo.existsById(projectId)) throw new EntityNotFoundException();
         List<Patch> patches = patchRepo.findAllByProjectId(projectId);
         List<ProjectPatchDTO> ppds = new ArrayList<>();
@@ -224,10 +225,10 @@ public class ProjectService {
         return resp;
     }
 
-    public ProjectPatchesResponse getAllPatchByProjectId(Long projectId, Long userId){
+    public ProjectPatchesResponse getAllPatchByProjectId(Long projectId, Long userId) {
         ProjectPatchesResponse ppds = getAllPatchByProjectId(projectId);
         for (ProjectPatchDTO p : ppds.getPatches()) {
-            if (uPatchLikesRepo.existsByUserIdAndPatchId(userId,p.getId())){
+            if (uPatchLikesRepo.existsByUserIdAndPatchId(userId, p.getId())) {
                 p.setLiked(true);
             }
         }
@@ -238,7 +239,7 @@ public class ProjectService {
         Project project = repo.findById(projectId).orElse(null);
         if (project == null) throw new EntityNotFoundException();
         if (!Objects.equals(project.getOwnerId(), userId)) throw new IllegalArgumentException();
-        if (request.getTitle()  != null) {
+        if (request.getTitle() != null) {
             project.setTitle(request.getTitle());
         }
         if (request.getDescription() != null) {
@@ -324,4 +325,31 @@ public class ProjectService {
         patchRepo.saveAndFlush(patch);
         uPatchLikesRepo.saveAndFlush(upl);
     }
+
+
+    @Transactional
+    public void deleteProject(Long projectId, Long userId) {    // todo cascade delete
+        if (!repo.existsByOwnerIdAndId(userId, projectId)) throw new IllegalArgumentException();
+        upFolowsRepo.deleteByProjectId(projectId);
+        upLikesRepo.deleteByProjectId(projectId);
+        deleteAllPatches(projectId, userId);
+        repo.deleteById(projectId);
+    }
+
+    @Transactional
+    public void deleteAllPatches(Long projectId, Long userId) {     // todo cascade delete
+        if (!repo.existsByOwnerIdAndId(userId, projectId)) throw new IllegalArgumentException();
+        List<Patch> patches = patchRepo.findAllByProjectId(projectId);
+        for (Patch patch : patches) {
+            uPatchLikesRepo.deleteAllByPatchId(patch.getId());
+        }
+        patchRepo.deleteAllByProjectId(projectId);
+    }
+
+    @Transactional
+    public void deletePatch(Long patchId, Long userId) {    // todo cascade delete
+        uPatchLikesRepo.deleteAllByPatchId(patchId);
+        patchRepo.deleteById(patchId);
+    }
+
 }

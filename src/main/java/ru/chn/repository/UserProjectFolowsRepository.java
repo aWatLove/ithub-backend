@@ -13,4 +13,5 @@ public interface UserProjectFolowsRepository extends JpaRepository<UserProjectFo
     boolean existsByUserIdAndProjectId(Long userId, Long projectId);
     List<UserProjectFolows> findAllByProjectId(Long projectId);
     Optional<UserProjectFolows> findByProjectIdAndUserId(Long projectId, Long userId);
+    void deleteByProjectId(Long projectId);
 }
