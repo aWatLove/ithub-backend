@@ -3,10 +3,8 @@ package ru.chn.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.chn.dto.TagPreviewDTO;
-import ru.chn.dto.UserPreviewDTO;
 import ru.chn.dto.request.TagPostRequest;
 import ru.chn.model.Tag;
-import ru.chn.model.User;
 import ru.chn.repository.TagRepository;
 
 import java.util.List;
@@ -29,19 +27,19 @@ public class TagService {
 
 
     //create tag
-    public Optional<Tag> createTag(TagPostRequest request){
+    public Tag createTag(TagPostRequest request){
         Tag tag = new Tag();
         tag.setTagname(request.getTagname());
         tag = repo.saveAndFlush(tag);
-        return Optional.ofNullable(tag);
+        return tag;
     }
 
     //update tag
-    public Optional<Tag> updateTag(TagPostRequest request, Long id){
+    public Tag updateTag(TagPostRequest request, Long id){
         Tag tag = repo.findById(id).orElse(null);
         if(request.getTagname()!= null) tag.setTagname(request.getTagname());
         tag = repo.save(tag);
-        return Optional.ofNullable(tag);
+        return tag;
     }
 
     //delete tag

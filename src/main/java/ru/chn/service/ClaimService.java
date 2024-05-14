@@ -26,7 +26,7 @@ public class ClaimService {
     private final ResumeRepository resumeRepository;
 
     //post create claim
-    public Optional<ClaimPostResponse> createClaimByTeamIdAndUserId(ClaimPostRequest request, Long id) {
+    public ClaimPostResponse createClaimByTeamIdAndUserId(ClaimPostRequest request, Long id) {
         if(repo.existsClaimByTeamIdAndResumeId(request.getTeamId(), request.getResumeId())){
             throw new DuplicateRequestException("Claim already exist");
         }
@@ -51,6 +51,6 @@ public class ClaimService {
         claimPostResponse.setAccepted(null);
 
 
-        return Optional.ofNullable(claimPostResponse);
+        return claimPostResponse;
     }
 }

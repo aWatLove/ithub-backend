@@ -3,15 +3,12 @@ package ru.chn.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.chn.dto.ResumePreviewDTO;
-import ru.chn.dto.UserPreviewDTO;
 import ru.chn.dto.request.ResumePostRequest;
 import ru.chn.dto.request.ResumePutRequest;
-import ru.chn.dto.response.ResumePreviewsResponse;
 import ru.chn.model.Resume;
-import ru.chn.model.User;
 import ru.chn.repository.ResumeRepository;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,13 +20,13 @@ public class ResumeService {
 
 
     // post Resume
-    public Optional<Resume> createResume(ResumePostRequest request, Long id){
+    public Resume createResume(ResumePostRequest request, Long id){
         Resume resume = new Resume();
         resume.setUserId(id);
         resume.setTitle(request.getTitle());
         resume.setHtmlInfo(request.getHtmlInfo());
         resume = repo.save(resume);
-        return Optional.ofNullable(resume);
+        return resume;
     }
     // get all user's resumes
     public List<ResumePreviewDTO> getAllUsersResumes(Long id){
@@ -47,16 +44,16 @@ public class ResumeService {
     }
 
     // update resume
-    public Optional<Resume> updateResumeById(ResumePutRequest request, Long resumeId){
+    public Resume updateResumeById(ResumePutRequest request, Long resumeId){
         Resume resume = repo.findById(resumeId).orElse(null);
-
+        if(resume == null) throw new EntityNotFoundException();
         if(request.getTitle()!= null) resume.setTitle(request.getTitle());
         if(request.getHtmlInfo()!= null) resume.setHtmlInfo(request.getHtmlInfo());
         if(request.getEmail()!= null) resume.setEmail(request.getEmail());
         if(request.getTelegram()!= null) resume.setTelegram(request.getTelegram());
         if(request.getLink()!= null) resume.setLink(request.getLink());
         resume = repo.saveAndFlush(resume);
-        return Optional.ofNullable(resume);
+        return resume;
     }
 
     // delete resume
