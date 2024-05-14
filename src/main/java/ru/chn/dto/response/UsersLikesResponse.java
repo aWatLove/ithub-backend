@@ -8,6 +8,6 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProjectLikesResponse {
+public class UsersLikesResponse {
     private List<UserPreviewDTO> likes;
 }

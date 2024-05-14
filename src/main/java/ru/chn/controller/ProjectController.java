@@ -64,9 +64,22 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjectLikes(id));
     }
 
+    @GetMapping("/{projectId}/patch/{patchId}/likes")
+    public ResponseEntity<?> getPatchLikes(@PathVariable Long projectId, @PathVariable Long patchId) {
+        return ResponseEntity.ok(projectService.getUserPatchLikes(projectId, patchId));
+    }
+
     @GetMapping("/{id}/folowers")
     public ResponseEntity<?> getProjectFolowers(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.getProjectFolowers(id));
     }
 
+    @GetMapping("/{projectId}/patch")
+    public ResponseEntity<?> getAllPatchesByProjectId(@PathVariable Long projectId, HttpServletRequest request) {
+        if (jwtUtils.existAuthToken(request)) {
+            Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+            return ResponseEntity.ok(projectService.getAllPatchByProjectId(projectId,userId));
+        }
+        return ResponseEntity.ok(projectService.getAllPatchByProjectId(projectId));
+    }
 }

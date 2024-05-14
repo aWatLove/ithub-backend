@@ -752,7 +752,8 @@ output:
 			"description":"patch description",
             "isLiked": false,
 			"likes_count":2,
-			"created_at":"2018-03-12T13:37:27+00:00"
+			"created_at":"2018-03-12T13:37:27+00:00",
+            "is_liked":false
 		},
 		{
 			"id":1,
@@ -761,7 +762,8 @@ output:
 			"description":"patch description",
             "isLiked": false,
 			"likes_count":2,
-			"created_at":"2018-03-12T13:37:27+00:00"
+			"created_at":"2018-03-12T13:37:27+00:00",
+            "is_liked":false
 		},
 		{
 			"id":2,
@@ -770,7 +772,8 @@ output:
 			"description":"patch description",
             "isLiked": false,
 			"likes_count":2,
-			"created_at":"2018-03-12T13:37:27+00:00"
+			"created_at":"2018-03-12T13:37:27+00:00",
+            "is_liked":false
 		}
 	]
 }

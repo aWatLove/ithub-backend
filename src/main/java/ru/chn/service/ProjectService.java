@@ -1,19 +1,14 @@
 package ru.chn.service;
 
-import com.sun.jdi.request.DuplicateRequestException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
+import ru.chn.dto.ProjectPatchDTO;
 import ru.chn.dto.ProjectTeamPreviewDTO;
 import ru.chn.dto.UserPreviewDTO;
 import ru.chn.dto.request.PatchCreateRequest;
 import ru.chn.dto.request.ProjectPostRequest;
-import ru.chn.dto.response.ProjectDetailsResponse;
-import ru.chn.dto.response.ProjectFolowersResponse;
-import ru.chn.dto.response.ProjectLikesResponse;
-import ru.chn.dto.response.ProjectListResponse;
+import ru.chn.dto.response.*;
 import ru.chn.model.*;
 import ru.chn.repository.*;
 
@@ -35,6 +30,7 @@ public class ProjectService {
     private final UserProjectLikesRepository upLikesRepo;
     private final UserRepository userRepo;
     private final PatchRepository patchRepo;
+    private final UsersPatchesLikesRepository uPatchLikesRepo;
 
     // это очень плохо, можно сделать лучше и правильней, но времени мало
     public ProjectDetailsResponse getProjectById(Long id) {
@@ -52,7 +48,7 @@ public class ProjectService {
         pdr.setTeam(ptpd);
 
         List<ProjectsTags> projectsTags = projectTagRepo.findAllByProjectId(id);
-        for(ProjectsTags pt : projectsTags) {
+        for (ProjectsTags pt : projectsTags) {
             Tag tag = tagRepo.findById(pt.getTagId()).orElse(null);
             if (tag == null) continue;
             pdr.getTags().add(tag);
@@ -63,10 +59,10 @@ public class ProjectService {
 
     public ProjectDetailsResponse getProjectById(Long id, Long userId) {
         ProjectDetailsResponse pdr = getProjectById(id);
-        if (upFolowsRepo.existsByUserIdAndProjectId(userId,id)) {
+        if (upFolowsRepo.existsByUserIdAndProjectId(userId, id)) {
             pdr.setFolow(true);
         }
-        if (upLikesRepo.existsByUserIdAndProjectId(userId,id)) {
+        if (upLikesRepo.existsByUserIdAndProjectId(userId, id)) {
             pdr.setLiked(true);
         }
         return pdr;
@@ -77,10 +73,10 @@ public class ProjectService {
         ProjectListResponse plr = new ProjectListResponse();
         plr.setProjects(new ArrayList<>());
         List<Long> projectIds = repo.findAllProjectIds();
-        for(Long id: projectIds) {
+        for (Long id : projectIds) {
             ProjectDetailsResponse pd = getProjectById(id);
             if (tagsList != null) {
-                for (Long tagId:tagsList) {
+                for (Long tagId : tagsList) {
                     if (projectTagRepo.existsByProjectIdAndTagId(id, tagId)) {
                         plr.getProjects().add(pd);
                     }
@@ -105,10 +101,10 @@ public class ProjectService {
         return plr;
     }
 
-    public ProjectLikesResponse getProjectLikes(Long id) {
+    public UsersLikesResponse getProjectLikes(Long id) {
         if (!repo.existsById(id)) throw new EntityNotFoundException();
         List<UserProjectLikes> upLikes = upLikesRepo.findAllByProjectId(id);
-        ProjectLikesResponse plr = new ProjectLikesResponse();
+        UsersLikesResponse plr = new UsersLikesResponse();
         plr.setLikes(new ArrayList<>());
         for (UserProjectLikes up : upLikes) {
             User user = userRepo.findUserById(up.getUserId()).orElse(null);
@@ -142,9 +138,9 @@ public class ProjectService {
     public ProjectDetailsResponse createProject(ProjectPostRequest request, Long userId) {
         if (request.getTeamId() == null) throw new IllegalArgumentException("team id is null");
         if (request.getTitle() == null) throw new IllegalArgumentException("title is null");
-        if (repo.existsByTeamIdAndTitle(request.getTeamId(),request.getTitle())) throw new EntityExistsException();
+        if (repo.existsByTeamIdAndTitle(request.getTeamId(), request.getTitle())) throw new EntityExistsException();
         if (!teamRepo.existsByOwnerIdAndId(userId, request.getTeamId())) throw new IllegalArgumentException();
-        // это бы вынести в конвертер
+        // todo это бы вынести в маппер
         Project project = new Project();
         project.setTeamId(request.getTeamId());
         project.setTitle(request.getTitle());
@@ -177,7 +173,7 @@ public class ProjectService {
         return getProjectById(project.getId());
     }
 
-    public Patch createPatch(Long projectId, PatchCreateRequest request, Long userId){
+    public Patch createPatch(Long projectId, PatchCreateRequest request, Long userId) {
         if (request.getTitle().isEmpty()) throw new IllegalArgumentException();
         if (projectId == null) throw new IllegalArgumentException();
         if (!repo.existsById(projectId)) throw new EntityNotFoundException();
@@ -197,4 +193,42 @@ public class ProjectService {
         return patchRepo.saveAndFlush(patch);
     }
 
+    public UsersLikesResponse getUserPatchLikes(Long projectId, Long patchId) {
+        List<UsersPatchesLikes> usersPatchesLikes = uPatchLikesRepo.findAllByPatchId(patchId);
+        UsersLikesResponse ulResp = new UsersLikesResponse();
+        ulResp.setLikes(new ArrayList<>());
+
+        for (UsersPatchesLikes upl : usersPatchesLikes) {
+            User user = userRepo.findUserById(upl.getUserId()).orElse(null);
+            if (user == null) continue;
+            UserPreviewDTO userPrev = new UserPreviewDTO();
+            userPrev.setId(user.getId());
+            userPrev.setUsername(user.getUsername());
+            userPrev.setAvatar(user.getAvatar());
+            ulResp.getLikes().add(userPrev);
+        }
+        return ulResp;
+    }
+
+    public ProjectPatchesResponse getAllPatchByProjectId(Long projectId){
+        if (!repo.existsById(projectId)) throw new EntityNotFoundException();
+        List<Patch> patches = patchRepo.findAllByProjectId(projectId);
+        List<ProjectPatchDTO> ppds = new ArrayList<>();
+        for (Patch p : patches) {
+            ppds.add(ProjectPatchDTO.build(p));
+        }
+        ProjectPatchesResponse resp = new ProjectPatchesResponse();
+        resp.setPatches(ppds);
+        return resp;
+    }
+
+    public ProjectPatchesResponse getAllPatchByProjectId(Long projectId, Long userId){
+        ProjectPatchesResponse ppds = getAllPatchByProjectId(projectId);
+        for (ProjectPatchDTO p : ppds.getPatches()) {
+            if (uPatchLikesRepo.existsByUserIdAndPatchId(userId,p.getId())){
+                p.setLiked(true);
+            }
+        }
+        return ppds;
+    }
 }
