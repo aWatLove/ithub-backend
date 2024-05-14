@@ -16,7 +16,6 @@ import ru.chn.repository.TeamRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +28,9 @@ public class ClaimService {
     public ClaimPostResponse createClaimByTeamIdAndUserId(ClaimPostRequest request, Long id) {
         if(repo.existsClaimByTeamIdAndResumeId(request.getTeamId(), request.getResumeId())){
             throw new DuplicateRequestException("Claim already exist");
+        }
+        if(!resumeRepository.existsResumeByUserIdAndId(id, request.getResumeId())){
+            throw new IllegalArgumentException();
         }
         Claim claim = new Claim(request.getTeamId(), request.getResumeId(), LocalDateTime.now(), LocalDateTime.now(), null);
         ClaimPostResponse claimPostResponse = new ClaimPostResponse();
