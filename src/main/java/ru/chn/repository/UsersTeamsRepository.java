@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsersTeamsRepository extends JpaRepository<UsersTeam, Long> {
+    boolean existsUsersTeamByUserIdAndTeamId(Long userId, Long teamId);
     List<UsersTeam> findUsersTeamsByUserId(Long userId);
     List<UsersTeam> findUsersTeamsByTeamId(Long teamId);
     Optional<UsersTeam> findUsersTeamByUserIdAndTeamId(Long userId, Long teamId);

@@ -29,8 +29,10 @@ public class ClaimService {
     private final UsersTeamsFolowsRepository usersTeamsFolowsRepository;
 
     //post create claim
-    public ClaimPostResponse createClaimByTeamIdAndUserId(ClaimPostRequest request, Long id) { //todo Сделать проверку на состав в команде, если уже там, то не подаётся
-
+    public ClaimPostResponse createClaimByTeamIdAndUserId(ClaimPostRequest request, Long id) {
+        if(usersTeamsRepository.existsUsersTeamByUserIdAndTeamId(id, request.getTeamId())){
+            throw new IllegalArgumentException();
+        }
         if (repo.existsClaimByTeamIdAndResumeId(request.getTeamId(), request.getResumeId())) {
             throw new DuplicateRequestException("Claim already exist");
         }
@@ -159,5 +161,21 @@ public class ClaimService {
             }
         }
 
+    }
+
+    //delete claim by claim id
+    public void deleteClaimByClaimId(Long claimId, Long userId){
+        Claim claim = repo.findById(claimId).orElse(null);
+        if(claim == null){
+            throw new EntityNotFoundException();
+        }
+        Resume resume = resumeRepository.findById(claim.getResumeId()).orElse(null);
+        if(resume == null){
+            throw new EntityNotFoundException();
+        }
+        if(userId!=resume.getUserId()){
+            throw new IllegalArgumentException();
+        }
+        repo.deleteById(claimId);
     }
 }

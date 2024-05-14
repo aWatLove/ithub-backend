@@ -53,4 +53,12 @@ public class ClaimController {
         claimService.confrimClaim(id, accept, role, userId);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteClaim(@PathVariable Long id, HttpServletRequest request){
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        claimService.deleteClaimByClaimId(id, userId);
+        return ResponseEntity.ok().build();
+    }
 }
