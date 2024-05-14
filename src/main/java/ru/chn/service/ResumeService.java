@@ -23,13 +23,13 @@ public class ResumeService {
 
 
     // post Resume
-    public Optional<Resume> createResume(ResumePostRequest request, Long id){
+    public Resume createResume(ResumePostRequest request, Long id){
         Resume resume = new Resume();
         resume.setUserId(id);
         resume.setTitle(request.getTitle());
         resume.setHtmlInfo(request.getHtmlInfo());
         resume = repo.save(resume);
-        return Optional.ofNullable(resume);
+        return resume;
     }
     // get all user's resumes
     public List<ResumePreviewDTO> getAllUsersResumes(Long id){

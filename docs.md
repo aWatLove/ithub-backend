@@ -445,6 +445,8 @@ output: `teamDetail`
 #### DELETE delete team
 ==надо ли оно?==
 
+#### DELETE quit from team
+TODO:
 
 ## Профиль проекта
 ### GET
