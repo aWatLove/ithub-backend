@@ -16,6 +16,6 @@ public class ClaimPostResponse {
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
-    private boolean accepted;
+    private Boolean accepted;
 
 }

@@ -1,5 +1,6 @@
 package ru.chn.controller;
 
+import com.sun.jdi.request.DuplicateRequestException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DuplicateKeyException;
@@ -21,5 +22,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<MessageResponse> handleDuplicateKeyException(DuplicateKeyException ex) {
         return ResponseEntity.badRequest().body(new MessageResponse("Username already exists"));
+    }
+    @ExceptionHandler(DuplicateRequestException.class)
+    public ResponseEntity<MessageResponse> handleDuplicateRequestException(DuplicateRequestException ex){
+        return ResponseEntity.badRequest().body(new MessageResponse(ex.getMessage()));
     }
 }

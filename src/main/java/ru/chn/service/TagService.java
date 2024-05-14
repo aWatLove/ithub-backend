@@ -32,7 +32,7 @@ public class TagService {
     public Optional<Tag> createTag(TagPostRequest request){
         Tag tag = new Tag();
         tag.setTagname(request.getTagname());
-        tag = repo.save(tag);
+        tag = repo.saveAndFlush(tag);
         return Optional.ofNullable(tag);
     }
 

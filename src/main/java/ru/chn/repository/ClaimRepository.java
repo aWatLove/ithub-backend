@@ -6,4 +6,5 @@ import ru.chn.model.Claim;
 
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
+    boolean existsClaimByTeamIdAndResumeId(Long teamId, Long resumeId);
 }

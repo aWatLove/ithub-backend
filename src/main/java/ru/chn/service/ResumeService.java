@@ -55,7 +55,7 @@ public class ResumeService {
         if(request.getEmail()!= null) resume.setEmail(request.getEmail());
         if(request.getTelegram()!= null) resume.setTelegram(request.getTelegram());
         if(request.getLink()!= null) resume.setLink(request.getLink());
-        resume = repo.save(resume);
+        resume = repo.saveAndFlush(resume);
         return Optional.ofNullable(resume);
     }
 

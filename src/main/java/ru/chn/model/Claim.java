@@ -23,5 +23,13 @@ public class Claim {
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
-    private boolean accepted;
+    private Boolean accepted;
+
+    public Claim(Long teamId, Long resumeId, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean accepted) {
+        this.teamId = teamId;
+        this.resumeId = resumeId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.accepted = accepted;
+    }
 }
