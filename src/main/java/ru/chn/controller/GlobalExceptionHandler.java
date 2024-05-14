@@ -7,7 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.chn.dto.response.MessageResponse;
+import ru.chn.dto.payment.response.MessageResponse;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -36,14 +36,13 @@ public class GlobalExceptionHandler {
     }
 
 
-
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<MessageResponse> handleEntityExistsException(EntityExistsException ex) {
         return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(DuplicateRequestException.class)
-    public ResponseEntity<MessageResponse> handleDuplicateRequestException(DuplicateRequestException ex){
+    public ResponseEntity<MessageResponse> handleDuplicateRequestException(DuplicateRequestException ex) {
         return ResponseEntity.badRequest().body(new MessageResponse(ex.getMessage()));
     }
 }

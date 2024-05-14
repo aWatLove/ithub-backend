@@ -3,21 +3,19 @@ package ru.chn.service;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.chn.dto.request.ClaimPostRequest;
-import ru.chn.dto.response.ClaimGetAllResponse;
-import ru.chn.dto.response.ClaimPostResponse;
-import ru.chn.dto.response.ResumeInClaimResponse;
-import ru.chn.dto.response.TeamInClaimResponse;
+import ru.chn.dto.payment.request.claim.ClaimPostRequest;
+import ru.chn.dto.payment.response.claim.ClaimGetAllResponse;
+import ru.chn.dto.payment.response.claim.ClaimPostResponse;
+import ru.chn.dto.payment.response.resume.ResumeInClaimResponse;
+import ru.chn.dto.payment.response.team.TeamInClaimResponse;
 import ru.chn.model.*;
 import ru.chn.repository.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +28,7 @@ public class ClaimService {
 
     //post create claim
     public ClaimPostResponse createClaimByTeamIdAndUserId(ClaimPostRequest request, Long id) {
-        if(usersTeamsRepository.existsUsersTeamByUserIdAndTeamId(id, request.getTeamId())){
+        if (usersTeamsRepository.existsUsersTeamByUserIdAndTeamId(id, request.getTeamId())) {
             throw new IllegalArgumentException();
         }
         if (repo.existsClaimByTeamIdAndResumeId(request.getTeamId(), request.getResumeId())) {
@@ -132,18 +130,18 @@ public class ClaimService {
             throw new EntityNotFoundException();
         }
         Team team = teamRepository.findTeamById(claim.getTeamId()).orElse(null);
-        if(team == null){
+        if (team == null) {
             throw new EntityNotFoundException();
         }
-        if(!Objects.equals(team.getOwnerId(), userId)){
+        if (!Objects.equals(team.getOwnerId(), userId)) {
             throw new IllegalArgumentException();
         }
 
         claim.setAccepted(accept);
         claim = repo.saveAndFlush(claim);
-        if(claim.getAccepted()){
+        if (claim.getAccepted()) {
             Resume resume = resumeRepository.findById(claim.getResumeId()).orElse(null);
-            if(resume == null){
+            if (resume == null) {
                 throw new EntityNotFoundException();
             }
             UsersTeam usersTeam = new UsersTeam();
@@ -152,8 +150,8 @@ public class ClaimService {
             usersTeam.setRole(role);
             usersTeam = usersTeamsRepository.saveAndFlush(usersTeam);
 
-            if(!usersTeamsFolowsRepository.existsByUserIdAndTeamId(userId, usersTeam.getTeamId())){
-                team.setFolowersCount(team.getFolowersCount()+1);
+            if (!usersTeamsFolowsRepository.existsByUserIdAndTeamId(userId, usersTeam.getTeamId())) {
+                team.setFolowersCount(team.getFolowersCount() + 1);
                 UsersTeamsFolows usersTeamsFolows = new UsersTeamsFolows();
                 usersTeamsFolows.setUserId(resume.getUserId());
                 usersTeamsFolows.setTeamId(claim.getTeamId());
@@ -164,16 +162,16 @@ public class ClaimService {
     }
 
     //delete claim by claim id
-    public void deleteClaimByClaimId(Long claimId, Long userId){
+    public void deleteClaimByClaimId(Long claimId, Long userId) {
         Claim claim = repo.findById(claimId).orElse(null);
-        if(claim == null){
+        if (claim == null) {
             throw new EntityNotFoundException();
         }
         Resume resume = resumeRepository.findById(claim.getResumeId()).orElse(null);
-        if(resume == null){
+        if (resume == null) {
             throw new EntityNotFoundException();
         }
-        if(!Objects.equals(userId, resume.getUserId())){
+        if (!Objects.equals(userId, resume.getUserId())) {
             throw new IllegalArgumentException();
         }
         repo.deleteById(claimId);

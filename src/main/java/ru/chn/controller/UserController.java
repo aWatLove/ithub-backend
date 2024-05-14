@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.chn.dto.request.UserUpdateRequest;
-import ru.chn.dto.response.MessageResponse;
-import ru.chn.dto.response.UserDetailResponse;
-import ru.chn.dto.response.UsersPreviewsResponse;
+import ru.chn.dto.payment.request.user.UserUpdateRequest;
+import ru.chn.dto.payment.response.MessageResponse;
+import ru.chn.dto.payment.response.user.UserDetailResponse;
+import ru.chn.dto.payment.response.user.UsersPreviewsResponse;
 import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.UserService;
 

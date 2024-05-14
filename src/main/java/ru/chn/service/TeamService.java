@@ -1,18 +1,16 @@
 package ru.chn.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-import ru.chn.dto.ProjectPreviewDTO;
-import ru.chn.dto.TeamMemberDTO;
-import ru.chn.dto.TeamPreviewDTO;
-import ru.chn.dto.UserPreviewDTO;
-import ru.chn.dto.request.RoleMemberUpdateRequest;
-import ru.chn.dto.request.TeamSaveRequest;
-import ru.chn.dto.response.TeamDetailsResponse;
-import ru.chn.dto.response.TeamFolowersResponse;
-import ru.chn.dto.response.TeamPreviewResponse;
+import ru.chn.dto.other.project.ProjectPreviewDTO;
+import ru.chn.dto.other.team.TeamMemberDTO;
+import ru.chn.dto.other.team.TeamPreviewDTO;
+import ru.chn.dto.other.user.UserPreviewDTO;
+import ru.chn.dto.payment.request.team.RoleMemberUpdateRequest;
+import ru.chn.dto.payment.request.team.TeamSaveRequest;
+import ru.chn.dto.payment.response.team.TeamDetailsResponse;
+import ru.chn.dto.payment.response.team.TeamFolowersResponse;
+import ru.chn.dto.payment.response.team.TeamPreviewResponse;
 import ru.chn.model.*;
 import ru.chn.repository.*;
 
@@ -21,7 +19,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

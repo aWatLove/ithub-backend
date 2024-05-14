@@ -1,15 +1,18 @@
 package ru.chn.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.chn.dto.ProjectPatchDTO;
-import ru.chn.dto.ProjectTeamPreviewDTO;
-import ru.chn.dto.UserPreviewDTO;
-import ru.chn.dto.request.PatchCreateRequest;
-import ru.chn.dto.request.ProjectPostRequest;
-import ru.chn.dto.request.ProjectPutRequest;
-import ru.chn.dto.response.*;
+import ru.chn.dto.other.project.ProjectPatchDTO;
+import ru.chn.dto.other.team.ProjectTeamPreviewDTO;
+import ru.chn.dto.other.user.UserPreviewDTO;
+import ru.chn.dto.payment.request.project.PatchCreateRequest;
+import ru.chn.dto.payment.request.project.ProjectPostRequest;
+import ru.chn.dto.payment.request.project.ProjectPutRequest;
+import ru.chn.dto.payment.response.project.ProjectDetailsResponse;
+import ru.chn.dto.payment.response.project.ProjectFolowersResponse;
+import ru.chn.dto.payment.response.project.ProjectListResponse;
+import ru.chn.dto.payment.response.project.ProjectPatchesResponse;
+import ru.chn.dto.payment.response.user.UsersLikesResponse;
 import ru.chn.model.*;
 import ru.chn.repository.*;
 

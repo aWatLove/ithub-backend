@@ -8,10 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.chn.dto.request.SigninRequest;
-import ru.chn.dto.request.SignupRequest;
-import ru.chn.dto.response.JwtResponse;
-import ru.chn.dto.response.MessageResponse;
+import ru.chn.dto.payment.request.auth.SigninRequest;
+import ru.chn.dto.payment.request.auth.SignupRequest;
+import ru.chn.dto.payment.response.user.JwtResponse;
+import ru.chn.dto.payment.response.MessageResponse;
 import ru.chn.model.User;
 import ru.chn.repository.UserRepository;
 import ru.chn.security.jwt.JwtUtils;
@@ -46,7 +46,7 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAvatar(), userDetails.getFirstname(),userDetails.getLastname(),userDetails.getBioInfo(), userDetails.getEmail(), userDetails.getTelegram(), userDetails.getLink()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAvatar(), userDetails.getFirstname(), userDetails.getLastname(), userDetails.getBioInfo(), userDetails.getEmail(), userDetails.getTelegram(), userDetails.getLink()));
     }
 
 

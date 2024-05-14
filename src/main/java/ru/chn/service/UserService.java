@@ -3,10 +3,10 @@ package ru.chn.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import ru.chn.dto.UsersTeamPreviewDTO;
-import ru.chn.dto.UserPreviewDTO;
-import ru.chn.dto.request.UserUpdateRequest;
-import ru.chn.dto.response.UserDetailResponse;
+import ru.chn.dto.other.user.UsersTeamPreviewDTO;
+import ru.chn.dto.other.user.UserPreviewDTO;
+import ru.chn.dto.payment.request.user.UserUpdateRequest;
+import ru.chn.dto.payment.response.user.UserDetailResponse;
 import ru.chn.model.Team;
 import ru.chn.model.User;
 
@@ -50,7 +50,7 @@ public class UserService {
 
 
         List<UsersTeam> usersTeams = usersTeamsRepo.findUsersTeamsByUserId(user_id);
-        for (UsersTeam ut: usersTeams) {
+        for (UsersTeam ut : usersTeams) {
             Team team = teamRepo.findTeamById(ut.getTeamId()).orElse(null);
             if (team == null) {
                 continue;

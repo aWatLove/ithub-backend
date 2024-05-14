@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.chn.dto.request.TagPostRequest;
-import ru.chn.dto.response.TagPreviewsResponse;
-import ru.chn.dto.response.UsersPreviewsResponse;
+import ru.chn.dto.payment.request.tag.TagPostRequest;
+import ru.chn.dto.payment.response.tag.TagPreviewsResponse;
 import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.TagService;
 
@@ -29,19 +28,19 @@ public class TagController {
 
     //create tag
     @PostMapping
-    public ResponseEntity<?> createTag(@RequestBody TagPostRequest body){
+    public ResponseEntity<?> createTag(@RequestBody TagPostRequest body) {
         return ResponseEntity.ok(tagService.createTag(body));
     }
 
     //update tag
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTag(@RequestBody TagPostRequest body, @PathVariable Long id){
+    public ResponseEntity<?> updateTag(@RequestBody TagPostRequest body, @PathVariable Long id) {
         return ResponseEntity.ok(tagService.updateTag(body, id));
     }
 
     //delete tag
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTag(@PathVariable Long id){
+    public ResponseEntity<?> deleteTag(@PathVariable Long id) {
         tagService.deleteTagByTagId(id);
         return ResponseEntity.ok().build();
     }

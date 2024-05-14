@@ -2,8 +2,8 @@ package ru.chn.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.chn.dto.TagPreviewDTO;
-import ru.chn.dto.request.TagPostRequest;
+import ru.chn.dto.other.tag.TagPreviewDTO;
+import ru.chn.dto.payment.request.tag.TagPostRequest;
 import ru.chn.model.Tag;
 import ru.chn.repository.TagRepository;
 
@@ -27,7 +27,7 @@ public class TagService {
 
 
     //create tag
-    public Tag createTag(TagPostRequest request){
+    public Tag createTag(TagPostRequest request) {
         Tag tag = new Tag();
         tag.setTagname(request.getTagname());
         tag = repo.saveAndFlush(tag);
@@ -35,16 +35,16 @@ public class TagService {
     }
 
     //update tag
-    public Tag updateTag(TagPostRequest request, Long id){
+    public Tag updateTag(TagPostRequest request, Long id) {
         Tag tag = repo.findById(id).orElse(null);
-        if(tag == null) throw new EntityNotFoundException();
-        if(request.getTagname()!= null) tag.setTagname(request.getTagname());
+        if (tag == null) throw new EntityNotFoundException();
+        if (request.getTagname() != null) tag.setTagname(request.getTagname());
         tag = repo.save(tag);
         return tag;
     }
 
     //delete tag
-    public void deleteTagByTagId(Long id){
+    public void deleteTagByTagId(Long id) {
         repo.deleteById(id);
     }
 

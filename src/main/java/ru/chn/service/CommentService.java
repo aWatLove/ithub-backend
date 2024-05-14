@@ -2,11 +2,10 @@ package ru.chn.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-import ru.chn.dto.UserPreviewDTO;
-import ru.chn.dto.request.CommentPostRequest;
-import ru.chn.dto.response.CommentDetailResponse;
-import ru.chn.dto.response.CommentGetAllResponse;
+import ru.chn.dto.other.user.UserPreviewDTO;
+import ru.chn.dto.payment.request.comment.CommentPostRequest;
+import ru.chn.dto.payment.response.comment.CommentDetailResponse;
+import ru.chn.dto.payment.response.comment.CommentGetAllResponse;
 import ru.chn.model.Comment;
 import ru.chn.model.User;
 import ru.chn.repository.CommentRepository;
@@ -59,7 +58,7 @@ public class CommentService {
 
     public void deleteComment(Long projectId, Long commentId, Long userId) {
         if (!projectRepo.existsById(projectId)) throw new EntityNotFoundException();
-        if (!repo.existsByUserIdAndIdAndProjectId(userId,commentId,projectId)) throw new IllegalArgumentException();
+        if (!repo.existsByUserIdAndIdAndProjectId(userId, commentId, projectId)) throw new IllegalArgumentException();
         repo.deleteById(commentId);
     }
 }
