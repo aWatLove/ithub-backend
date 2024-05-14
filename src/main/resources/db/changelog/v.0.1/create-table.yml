@@ -1,0 +1,687 @@
+databaseChangeLog:
+  - changeSet:
+      id: "create-table-users"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "users"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+              - column:
+                  name: "username"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "avatar"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "firstname"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "lastname"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "password"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: "bio_info"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "email"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "telegram"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "link"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+
+
+  - changeSet:
+      id: "create-table-teams"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "teams"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "owner_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "name"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "description"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "folowers_count"
+                  type: "INT"
+                  defaultValueNumeric: "0"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "avatar"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+
+
+  - changeSet:
+      id: "create-table-users_teams"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "users_teams"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "team_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "role"
+                  type: "VARCHAR"
+                  defaultValue: "Участник"
+                  constraints:
+                    nullable: false
+
+
+  - changeSet:
+      id: "create-table-projects"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "projects"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "owner_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "team_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "title"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "description"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "html_info"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "stack"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "likes_count"
+                  type: "BIGINT"
+                  defaultValueNumeric: "0"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "folowers_count"
+                  type: "BIGINT"
+                  defaultValueNumeric: "0"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "patch_count"
+                  type: "BIGINT"
+                  defaultValueNumeric: "0"
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: "create-table-patches"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "patches"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "project_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+              - column:
+                  name: "title"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "description"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "likes_count"
+                  type: "BIGINT"
+                  defaultValueNumeric: "0"
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: "create-table-users_projects_folows"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "users_projects_folows"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+              - column:
+                  name: "project_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+
+  - changeSet:
+      id: "create-table-users_projects_likes"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "users_projects_likes"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+              - column:
+                  name: "project_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+
+  - changeSet:
+      id: "create-table-users_patches_likes"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "users_patches_likes"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "patch_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+
+
+  - changeSet:
+      id: "create-table-users_teams_folows"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "users_teams_folows"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "team_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+
+
+  - changeSet:
+      id: "create-table-resumes"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "resumes"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "title"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "html_info"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "email"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "telegram"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: "link"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: "create-table-claims"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "claims"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "team_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "resume_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "accepted"
+                  type: "BOOLEAN"
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: "create-table-comments"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "comments"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "project_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "text"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: "create-table-tags"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "tags"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "tagname"
+                  type: "VARCHAR"
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: "create-table-projects_tags"
+      author: "awatlove"
+      changes:
+        - createTable:
+            tableName: "projects_tags"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: "project_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+              - column:
+                  name: "tag_id"
+                  type: "BIGINT"
+                  constraints:
+                    deleteCascade: true
+                    nullable: false
+
+
+
+
+  - changeSet:
+      author: "awatlove"
+      id: "add_fk_constraint"
+      changes:
+        #        teams
+        - addForeignKeyConstraint:
+            baseTableName: "teams"
+            baseColumnNames: "owner_id"
+            constraintName: "fk_teams_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        #         users_teams
+        - addForeignKeyConstraint:
+            baseTableName: "users_teams"
+            baseColumnNames: "user_id"
+            constraintName: "fk_users_teams_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "users_teams"
+            baseColumnNames: "team_id"
+            constraintName: "fk_users_teams_teams"
+            referencedTableName: "teams"
+            referencedColumnNames: "id"
+        #            project
+        - addForeignKeyConstraint:
+            baseTableName: "projects"
+            baseColumnNames: "owner_id"
+            constraintName: "fk_projects_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "projects"
+            baseColumnNames: "team_id"
+            constraintName: "fk_projects_teams"
+            referencedTableName: "teams"
+            referencedColumnNames: "id"
+        #            patches
+        - addForeignKeyConstraint:
+            baseTableName: "patches"
+            baseColumnNames: "project_id"
+            constraintName: "fk_patches_projects"
+            referencedTableName: "projects"
+            referencedColumnNames: "id"
+        #           users_projects_folows
+        - addForeignKeyConstraint:
+            baseTableName: "users_projects_folows"
+            baseColumnNames: "user_id"
+            constraintName: "fk_users_projects_folows_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "users_projects_folows"
+            baseColumnNames: "project_id"
+            constraintName: "fk_users_projects_folows_projects"
+            referencedTableName: "projects"
+            referencedColumnNames: "id"
+        #            users_projects_likes
+        - addForeignKeyConstraint:
+            baseTableName: "users_projects_likes"
+            baseColumnNames: "user_id"
+            constraintName: "fk_users_projects_likes_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "users_projects_likes"
+            baseColumnNames: "project_id"
+            constraintName: "fk_users_projects_likes_projects"
+            referencedTableName: "projects"
+            referencedColumnNames: "id"
+        #            users_patches_likes
+        - addForeignKeyConstraint:
+            baseTableName: "users_patches_likes"
+            baseColumnNames: "user_id"
+            constraintName: "fk_users_patches_likes_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "users_patches_likes"
+            baseColumnNames: "patch_id"
+            constraintName: "fk_users_patches_likes_patches"
+            referencedTableName: "patches"
+            referencedColumnNames: "id"
+        #            users_teams_folows
+        - addForeignKeyConstraint:
+            baseTableName: "users_teams_folows"
+            baseColumnNames: "user_id"
+            constraintName: "fk_users_teams_folows_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "users_teams_folows"
+            baseColumnNames: "team_id"
+            constraintName: "fk_users_teams_folows_teams"
+            referencedTableName: "teams"
+            referencedColumnNames: "id"
+        #            resumes
+        - addForeignKeyConstraint:
+            baseTableName: "resumes"
+            baseColumnNames: "user_id"
+            constraintName: "fk_resumes_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        #            claims
+        - addForeignKeyConstraint:
+            baseTableName: "claims"
+            baseColumnNames: "team_id"
+            constraintName: "fk_claims_teams"
+            referencedTableName: "teams"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "claims"
+            baseColumnNames: "resume_id"
+            constraintName: "fk_claims_resumes"
+            referencedTableName: "resumes"
+            referencedColumnNames: "id"
+        #            comments
+        - addForeignKeyConstraint:
+            baseTableName: "comments"
+            baseColumnNames: "user_id"
+            constraintName: "fk_comments_users"
+            referencedTableName: "users"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "comments"
+            baseColumnNames: "project_id"
+            constraintName: "fk_comments_projects"
+            referencedTableName: "projects"
+            referencedColumnNames: "id"
+        #             projects_tags
+        - addForeignKeyConstraint:
+            baseTableName: "projects_tags"
+            baseColumnNames: "project_id"
+            constraintName: "fk_projects_tags_projects"
+            deleteCascade: true
+            referencedTableName: "projects"
+            referencedColumnNames: "id"
+        - addForeignKeyConstraint:
+            baseTableName: "projects_tags"
+            baseColumnNames: "tag_id"
+            constraintName: "fk_projects_tags_tags"
+            referencedTableName: "tags"
+            referencedColumnNames: "id"
+
