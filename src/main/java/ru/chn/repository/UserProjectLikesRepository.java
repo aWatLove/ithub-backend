@@ -6,9 +6,11 @@ import ru.chn.model.UserProjectFolows;
 import ru.chn.model.UserProjectLikes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserProjectLikesRepository extends JpaRepository<UserProjectLikes, Long> {
     boolean existsByUserIdAndProjectId(Long userId, Long projectId);
     List<UserProjectLikes> findAllByProjectId(Long projectId);
+    Optional<UserProjectLikes> findByProjectIdAndUserId(Long projectId, Long userId);
 }

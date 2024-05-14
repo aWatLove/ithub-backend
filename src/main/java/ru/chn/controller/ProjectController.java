@@ -90,4 +90,28 @@ public class ProjectController {
         Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
         return ResponseEntity.ok(projectService.updateProjectDetails(projectId,body,userId));
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{projectId}/folow")
+    public ResponseEntity<?> folowProject(@PathVariable Long projectId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        projectService.folowProject(projectId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{projectId}/like")
+    public ResponseEntity<?> likeProject(@PathVariable Long projectId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        projectService.likeProject(projectId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{projectId}/patch/{patchId}/like")
+    public ResponseEntity<?> likePatch(@PathVariable Long projectId, @PathVariable Long patchId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        projectService.likePatch(projectId, patchId, userId);
+        return ResponseEntity.ok().build();
+    }
 }

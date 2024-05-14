@@ -269,4 +269,59 @@ public class ProjectService {
         repo.saveAndFlush(project);
         return getProjectById(projectId, userId);
     }
+
+    public void folowProject(Long projectId, Long userId) {
+        UserProjectFolows utf = upFolowsRepo.findByProjectIdAndUserId(projectId, userId).orElse(null);
+        Project project = repo.findById(projectId).orElse(null);
+        if (project == null) throw new EntityNotFoundException();
+        if (utf != null) {
+            upFolowsRepo.deleteById(utf.getId());
+            project.setFolowersCount(project.getFolowersCount() - 1);
+            repo.saveAndFlush(project);
+            return;
+        }
+        utf = new UserProjectFolows();
+        project.setFolowersCount(project.getFolowersCount() + 1);
+        utf.setProjectId(projectId);
+        utf.setUserId(userId);
+        repo.saveAndFlush(project);
+        upFolowsRepo.saveAndFlush(utf);
+    }
+
+    public void likeProject(Long projectId, Long userId) {
+        UserProjectLikes upl = upLikesRepo.findByProjectIdAndUserId(projectId, userId).orElse(null);
+        Project project = repo.findById(projectId).orElse(null);
+        if (project == null) throw new EntityNotFoundException();
+        if (upl != null) {
+            upLikesRepo.deleteById(upl.getId());
+            project.setLikesCount(project.getLikesCount() - 1);
+            repo.saveAndFlush(project);
+            return;
+        }
+        upl = new UserProjectLikes();
+        project.setLikesCount(project.getLikesCount() + 1);
+        upl.setProjectId(projectId);
+        upl.setUserId(userId);
+        repo.saveAndFlush(project);
+        upLikesRepo.saveAndFlush(upl);
+    }
+
+    public void likePatch(Long projectId, Long patchId, Long userId) {
+        if (!repo.existsById(projectId)) throw new EntityNotFoundException();
+        UsersPatchesLikes upl = uPatchLikesRepo.findByPatchIdAndUserId(patchId, userId).orElse(null);
+        Patch patch = patchRepo.findById(projectId).orElse(null);
+        if (patch == null) throw new EntityNotFoundException();
+        if (upl != null) {
+            uPatchLikesRepo.deleteById(upl.getId());
+            patch.setLikesCount(patch.getLikesCount() - 1);
+            patchRepo.saveAndFlush(patch);
+            return;
+        }
+        upl = new UsersPatchesLikes();
+        patch.setLikesCount(patch.getLikesCount() + 1);
+        upl.setPatchId(patchId);
+        upl.setUserId(userId);
+        patchRepo.saveAndFlush(patch);
+        uPatchLikesRepo.saveAndFlush(upl);
+    }
 }
