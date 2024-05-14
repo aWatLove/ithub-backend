@@ -2,9 +2,11 @@ package ru.chn.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.chn.dto.request.RoleMemberUpdateRequest;
 import ru.chn.dto.request.TeamSaveRequest;
 import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.TeamService;
@@ -57,5 +59,13 @@ public class TeamController {
     public ResponseEntity<?> updateTeam(@RequestBody TeamSaveRequest body, @PathVariable Long id, HttpServletRequest request) {
         Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
         return ResponseEntity.ok(teamService.updateTeam(userId, id, body));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{id}/member/{memberId}")
+    public ResponseEntity<?> updateMemberRole(@RequestBody RoleMemberUpdateRequest body, @PathVariable Long id, @PathVariable Long memberId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        teamService.updateTeamMemberRole(id, userId, memberId, body);
+        return ResponseEntity.ok().build();
     }
 }

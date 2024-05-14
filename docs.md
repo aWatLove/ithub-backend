@@ -379,7 +379,12 @@ output: `teamDetails`
 **auth**
 
 input: `team_id`, `member_id`
-?role = (new role)
+output:
+```json
+{
+  "role": "newRole"
+}
+```
 
 #### PUT folow to team
 `PUT /api/team/:team_id/folow`

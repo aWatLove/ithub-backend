@@ -7,6 +7,7 @@ import ru.chn.dto.ProjectPreviewDTO;
 import ru.chn.dto.TeamMemberDTO;
 import ru.chn.dto.TeamPreviewDTO;
 import ru.chn.dto.UserPreviewDTO;
+import ru.chn.dto.request.RoleMemberUpdateRequest;
 import ru.chn.dto.request.TeamSaveRequest;
 import ru.chn.dto.response.TeamDetailsResponse;
 import ru.chn.dto.response.TeamFolowersResponse;
@@ -145,5 +146,19 @@ public class TeamService {
         }
         repo.saveAndFlush(team);
         return getTeamById(teamId, userId);
+    }
+
+    public void updateTeamMemberRole(Long teamId, Long userId, Long memberId, RoleMemberUpdateRequest request) {
+        if (request.getRole().isEmpty()) throw new IllegalArgumentException();
+        Team team = repo.findTeamById(teamId).orElse(null);
+        if (team == null)
+            throw new EntityNotFoundException();
+        if (!Objects.equals(team.getOwnerId(), userId))
+            throw new IllegalArgumentException();
+
+        UsersTeam ut = usersTeamsRepo.findUsersTeamByUserIdAndTeamId(memberId, teamId).orElse(null);
+        if (ut == null) throw new EntityNotFoundException();
+        ut.setRole(request.getRole());
+        usersTeamsRepo.saveAndFlush(ut);
     }
 }
