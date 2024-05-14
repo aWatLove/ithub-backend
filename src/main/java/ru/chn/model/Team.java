@@ -1,6 +1,7 @@
 package ru.chn.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +16,11 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long owner_id;
+    @JsonProperty("owner_id")
+    private Long ownerId;
     private String name;
     private String description;
-    private Long folowers_count;
+    @JsonProperty("folowers_count")
+    private Long folowersCount;
     private String avatar;
 }

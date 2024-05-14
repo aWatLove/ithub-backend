@@ -379,7 +379,12 @@ output: `teamDetails`
 **auth**
 
 input: `team_id`, `member_id`
-?role = (new role)
+output:
+```json
+{
+  "role": "newRole"
+}
+```
 
 #### PUT folow to team
 `PUT /api/team/:team_id/folow`
@@ -389,7 +394,7 @@ input: `team_id`, user_id from token
 output: ==todo: надо ли здесь чтото возвращать кроме `200 ок`?==
 ### DELETE
 #### DELETE member
-`DELETE /api/team/:team_id/:user_id`
+`DELETE /api/team/:team_id/member/:user_id`
 **auth**
 
 - deleteTeamMemberByTeamIdAndUserId
@@ -440,6 +445,8 @@ output: `teamDetail`
 #### DELETE delete team
 ==надо ли оно?==
 
+#### DELETE quit from team
+TODO:
 
 ## Профиль проекта
 ### GET
@@ -513,7 +520,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -548,7 +555,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -590,7 +597,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -625,7 +632,7 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolowed":true,
+			"isFolow":true,
 			"isLiked":false,
 			"tags":[
 				{
@@ -743,6 +750,7 @@ output:
 			"project_id":0,
 			"title":"patchtitle",
 			"description":"patch description",
+            "isLiked": false,
 			"likes_count":2,
 			"created_at":"2018-03-12T13:37:27+00:00"
 		},
@@ -751,6 +759,7 @@ output:
 			"project_id":0,
 			"title":"patchtitle",
 			"description":"patch description",
+            "isLiked": false,
 			"likes_count":2,
 			"created_at":"2018-03-12T13:37:27+00:00"
 		},
@@ -759,6 +768,7 @@ output:
 			"project_id":0,
 			"title":"patchtitle",
 			"description":"patch description",
+            "isLiked": false,
 			"likes_count":2,
 			"created_at":"2018-03-12T13:37:27+00:00"
 		}
