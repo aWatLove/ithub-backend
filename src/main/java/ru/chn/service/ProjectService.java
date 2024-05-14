@@ -8,6 +8,7 @@ import ru.chn.dto.ProjectTeamPreviewDTO;
 import ru.chn.dto.UserPreviewDTO;
 import ru.chn.dto.request.PatchCreateRequest;
 import ru.chn.dto.request.ProjectPostRequest;
+import ru.chn.dto.request.ProjectPutRequest;
 import ru.chn.dto.response.*;
 import ru.chn.model.*;
 import ru.chn.repository.*;
@@ -17,6 +18,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -230,5 +232,41 @@ public class ProjectService {
             }
         }
         return ppds;
+    }
+
+    public ProjectDetailsResponse updateProjectDetails(Long projectId, ProjectPutRequest request, Long userId) {
+        Project project = repo.findById(projectId).orElse(null);
+        if (project == null) throw new EntityNotFoundException();
+        if (!Objects.equals(project.getOwnerId(), userId)) throw new IllegalArgumentException();
+        if (request.getTitle()  != null) {
+            project.setTitle(request.getTitle());
+        }
+        if (request.getDescription() != null) {
+            project.setDescription(request.getDescription());
+        }
+        if (request.getHtmlInfo() != null) {
+            project.setHtmlInfo(request.getHtmlInfo());
+        }
+        if (request.getStack() != null) {
+            project.setStack(request.getStack());
+        }
+        if (request.getTags() != null) {
+            List<ProjectsTags> projectsTagsList = projectTagRepo.findAllByProjectId(projectId);
+            if (!projectsTagsList.isEmpty()) {
+                projectTagRepo.deleteAll(projectsTagsList);
+            }
+
+            for (Long tagId : request.getTags()) {
+                Tag tag = tagRepo.findById(tagId).orElse(null);
+                if (tag == null) continue;
+                ProjectsTags pt = new ProjectsTags();
+                pt.setProjectId(project.getId());
+                pt.setTagId(tagId);
+                projectTagRepo.save(pt);
+            }
+            projectTagRepo.flush();
+        }
+        repo.saveAndFlush(project);
+        return getProjectById(projectId, userId);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.chn.dto.request.PatchCreateRequest;
 import ru.chn.dto.request.ProjectPostRequest;
+import ru.chn.dto.request.ProjectPutRequest;
 import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.ProjectService;
 
@@ -81,5 +82,12 @@ public class ProjectController {
             return ResponseEntity.ok(projectService.getAllPatchByProjectId(projectId,userId));
         }
         return ResponseEntity.ok(projectService.getAllPatchByProjectId(projectId));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{projectId}")
+    public ResponseEntity<?> updateProjectDetails(@PathVariable Long projectId, @RequestBody ProjectPutRequest body, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        return ResponseEntity.ok(projectService.updateProjectDetails(projectId,body,userId));
     }
 }
