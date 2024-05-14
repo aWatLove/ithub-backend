@@ -7,8 +7,8 @@ import ru.chn.dto.request.TagPostRequest;
 import ru.chn.model.Tag;
 import ru.chn.repository.TagRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +37,7 @@ public class TagService {
     //update tag
     public Tag updateTag(TagPostRequest request, Long id){
         Tag tag = repo.findById(id).orElse(null);
+        if(tag == null) throw new EntityNotFoundException();
         if(request.getTagname()!= null) tag.setTagname(request.getTagname());
         tag = repo.save(tag);
         return tag;
