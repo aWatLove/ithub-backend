@@ -394,7 +394,7 @@ input: `team_id`, user_id from token
 output: ==todo: надо ли здесь чтото возвращать кроме `200 ок`?==
 ### DELETE
 #### DELETE member
-`DELETE /api/team/:team_id/:user_id`
+`DELETE /api/team/:team_id/member/:user_id`
 **auth**
 
 - deleteTeamMemberByTeamIdAndUserId

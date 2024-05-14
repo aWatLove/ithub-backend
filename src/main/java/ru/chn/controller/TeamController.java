@@ -76,4 +76,12 @@ public class TeamController {
         teamService.folowTeam(id, userId);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{id}/member/{memberId}")
+    public ResponseEntity<?> deleteTeamMember(@PathVariable Long id, @PathVariable Long memberId, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        teamService.deleteMember(id, memberId, userId);
+        return ResponseEntity.ok().build();
+    }
 }

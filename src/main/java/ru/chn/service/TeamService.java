@@ -3,6 +3,7 @@ package ru.chn.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import ru.chn.dto.ProjectPreviewDTO;
 import ru.chn.dto.TeamMemberDTO;
 import ru.chn.dto.TeamPreviewDTO;
@@ -163,7 +164,7 @@ public class TeamService {
     }
 
     public void folowTeam(Long teamId, Long userId) {
-        UsersTeamsFolows utf = utFolowRepo.findByUserIdAndTeamId(userId,teamId).orElse(null);
+        UsersTeamsFolows utf = utFolowRepo.findByUserIdAndTeamId(userId, teamId).orElse(null);
         Team team = repo.findTeamById(teamId).orElse(null);
         if (team == null) throw new EntityNotFoundException();
         if (utf != null) {
@@ -178,5 +179,15 @@ public class TeamService {
         utf.setUserId(userId);
         repo.saveAndFlush(team);
         utFolowRepo.saveAndFlush(utf);
+    }
+
+    public void deleteMember(Long teamId, Long memberId, Long ownerId) {
+        if (Objects.equals(memberId, ownerId)) throw new IllegalArgumentException();
+        UsersTeam ut = usersTeamsRepo.findUsersTeamByUserIdAndTeamId(memberId, teamId).orElse(null);
+        if (ut == null) throw new EntityNotFoundException();
+        Team team = repo.findTeamById(teamId).orElse(null);
+        if (team == null) throw new EntityNotFoundException();
+        if (!Objects.equals(team.getOwnerId(), ownerId)) throw new IllegalArgumentException();
+        usersTeamsRepo.deleteById(ut.getId());
     }
 }
