@@ -3,10 +3,9 @@ package ru.chn.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import ru.chn.dto.request.TeamSaveRequest;
 import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.TeamService;
 
@@ -46,4 +45,17 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getTeamFolowers(id));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping()
+    public ResponseEntity<?> createTeam(@RequestBody TeamSaveRequest body, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        return ResponseEntity.ok(teamService.createTeam(userId, body));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTeam(@RequestBody TeamSaveRequest body, @PathVariable Long id, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        return ResponseEntity.ok(teamService.updateTeam(userId, id, body));
+    }
 }

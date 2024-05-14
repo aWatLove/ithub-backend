@@ -7,15 +7,18 @@ import ru.chn.dto.ProjectPreviewDTO;
 import ru.chn.dto.TeamMemberDTO;
 import ru.chn.dto.TeamPreviewDTO;
 import ru.chn.dto.UserPreviewDTO;
+import ru.chn.dto.request.TeamSaveRequest;
 import ru.chn.dto.response.TeamDetailsResponse;
 import ru.chn.dto.response.TeamFolowersResponse;
 import ru.chn.dto.response.TeamPreviewResponse;
 import ru.chn.model.*;
 import ru.chn.repository.*;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -33,9 +36,9 @@ public class TeamService {
             throw new EntityNotFoundException();
         }
 
-        TeamDetailsResponse tdr = new TeamDetailsResponse(team.getId(), team.getName(), team.getDescription(), team.getFolowers_count(), team.getAvatar(), team.getOwner_id());
+        TeamDetailsResponse tdr = new TeamDetailsResponse(team.getId(), team.getName(), team.getDescription(), team.getFolowersCount(), team.getAvatar(), team.getOwnerId());
         List<UsersTeam> usersTeams = usersTeamsRepo.findUsersTeamsByTeamId(id);
-        for (UsersTeam ut: usersTeams) {
+        for (UsersTeam ut : usersTeams) {
             User user = userRepo.findById(ut.getUserId()).orElse(null);
             if (user == null) {
                 continue;
@@ -44,8 +47,8 @@ public class TeamService {
             tdr.getMembers().add(tmb);
         }
         List<Project> projects = projectRepo.findProjectsByTeamId(id);
-        for (Project p: projects) {
-            ProjectPreviewDTO ppd = new ProjectPreviewDTO(p.getId(), p.getTitle(), p.getDescription(), p.getCreatedAt(),p.getFolowersCount(), p.getPatchCount());
+        for (Project p : projects) {
+            ProjectPreviewDTO ppd = new ProjectPreviewDTO(p.getId(), p.getTitle(), p.getDescription(), p.getCreatedAt(), p.getFolowersCount(), p.getPatchCount());
             tdr.getProjects().add(ppd);
         }
         return tdr;
@@ -63,9 +66,9 @@ public class TeamService {
         List<Team> teams = repo.findAll();
         TeamPreviewResponse tpr = new TeamPreviewResponse();
         tpr.setTeams(new ArrayList<>());
-        for (Team t: teams) {
+        for (Team t : teams) {
             Long fCount = utFolowRepo.countByTeamId(t.getId());
-            TeamPreviewDTO tpd = new TeamPreviewDTO(t.getId(),t.getName(), t.getAvatar(), fCount);
+            TeamPreviewDTO tpd = new TeamPreviewDTO(t.getId(), t.getName(), t.getAvatar(), fCount);
             if (userId != null) {
                 if (utFolowRepo.existsByUserIdAndTeamId(userId, t.getId())) {
                     tpd.setFolow(true);
@@ -82,7 +85,7 @@ public class TeamService {
             return new TeamFolowersResponse();
         }
         TeamFolowersResponse tfr = new TeamFolowersResponse();
-        for (UsersTeamsFolows ut: utfs) {
+        for (UsersTeamsFolows ut : utfs) {
             User user = userRepo.findUserById(ut.getUserId()).orElse(null);
             if (user == null) {
                 continue;
@@ -94,5 +97,53 @@ public class TeamService {
             tfr.getFolowers().add(upd);
         }
         return tfr;
+    }
+
+    public TeamDetailsResponse createTeam(Long userId, TeamSaveRequest request) {
+        Team team = new Team();
+        if (request.getName() == null) {
+            throw new IllegalArgumentException("team name cant be null");
+        }
+        if (repo.existsByOwnerIdAndName(userId, request.getName())) {
+            throw new EntityExistsException();
+        }
+        team.setName(request.getName());
+        team.setAvatar(request.getAvatar());
+        team.setDescription(request.getDescription());
+        team.setOwnerId(userId);
+        team.setFolowersCount(0L);
+        repo.saveAndFlush(team);
+        Team newTeam = repo.findTeamByOwnerIdAndName(userId, team.getName()).orElse(null);
+        if (newTeam == null) throw new RuntimeException("team not created");
+        UsersTeamsFolows utf = new UsersTeamsFolows();
+        utf.setTeamId(newTeam.getId());
+        utf.setUserId(userId);
+        utFolowRepo.saveAndFlush(utf);
+        UsersTeam usersTeam = new UsersTeam();
+        usersTeam.setUserId(userId);
+        usersTeam.setTeamId(newTeam.getId());
+        usersTeam.setRole("Создатель");
+        usersTeamsRepo.saveAndFlush(usersTeam);
+        return getTeamById(newTeam.getId());
+    }
+
+    public TeamDetailsResponse updateTeam(Long userId, Long teamId, TeamSaveRequest request) {
+        Team team = repo.findTeamById(teamId).orElse(null);
+        if (team == null)
+            throw new EntityNotFoundException();
+        if (!Objects.equals(team.getOwnerId(), userId))
+            throw new IllegalArgumentException();
+        if (request.getName() != null) {
+            if (repo.existsByOwnerIdAndName(userId, request.getName())) throw new IllegalArgumentException();
+            team.setName(request.getName());
+        }
+        if (request.getDescription() != null) {
+            team.setDescription(request.getDescription());
+        }
+        if (request.getAvatar() != null) {
+            team.setAvatar(request.getAvatar());
+        }
+        repo.saveAndFlush(team);
+        return getTeamById(teamId, userId);
     }
 }
