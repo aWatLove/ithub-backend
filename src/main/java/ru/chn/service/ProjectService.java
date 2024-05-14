@@ -3,10 +3,16 @@ package ru.chn.service;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import ru.chn.dto.ProjectTeamPreviewDTO;
+import ru.chn.dto.UserPreviewDTO;
+import ru.chn.dto.request.PatchCreateRequest;
 import ru.chn.dto.request.ProjectPostRequest;
 import ru.chn.dto.response.ProjectDetailsResponse;
+import ru.chn.dto.response.ProjectFolowersResponse;
+import ru.chn.dto.response.ProjectLikesResponse;
 import ru.chn.dto.response.ProjectListResponse;
 import ru.chn.model.*;
 import ru.chn.repository.*;
@@ -27,8 +33,10 @@ public class ProjectService {
     private final TagRepository tagRepo;
     private final UserProjectFolowsRepository upFolowsRepo;
     private final UserProjectLikesRepository upLikesRepo;
+    private final UserRepository userRepo;
+    private final PatchRepository patchRepo;
 
-    // это очень плохо, но времени мало
+    // это очень плохо, можно сделать лучше и правильней, но времени мало
     public ProjectDetailsResponse getProjectById(Long id) {
         Project project = repo.findById(id).orElse(null);
         if (project == null) throw new EntityNotFoundException();
@@ -97,12 +105,46 @@ public class ProjectService {
         return plr;
     }
 
+    public ProjectLikesResponse getProjectLikes(Long id) {
+        if (!repo.existsById(id)) throw new EntityNotFoundException();
+        List<UserProjectLikes> upLikes = upLikesRepo.findAllByProjectId(id);
+        ProjectLikesResponse plr = new ProjectLikesResponse();
+        plr.setLikes(new ArrayList<>());
+        for (UserProjectLikes up : upLikes) {
+            User user = userRepo.findUserById(up.getUserId()).orElse(null);
+            if (user == null) continue;
+            UserPreviewDTO userPrevD = new UserPreviewDTO();
+            userPrevD.setId(user.getId());
+            userPrevD.setUsername(user.getUsername());
+            userPrevD.setAvatar(user.getAvatar());
+            plr.getLikes().add(userPrevD);
+        }
+        return plr;
+    }
+
+    public ProjectFolowersResponse getProjectFolowers(Long id) {
+        if (!repo.existsById(id)) throw new EntityNotFoundException();
+        List<UserProjectFolows> upFolows = upFolowsRepo.findAllByProjectId(id);
+        ProjectFolowersResponse pfr = new ProjectFolowersResponse();
+        pfr.setFolowers(new ArrayList<>());
+        for (UserProjectFolows up : upFolows) {
+            User user = userRepo.findUserById(up.getUserId()).orElse(null);
+            if (user == null) continue;
+            UserPreviewDTO userPrevD = new UserPreviewDTO();
+            userPrevD.setId(user.getId());
+            userPrevD.setUsername(user.getUsername());
+            userPrevD.setAvatar(user.getAvatar());
+            pfr.getFolowers().add(userPrevD);
+        }
+        return pfr;
+    }
 
     public ProjectDetailsResponse createProject(ProjectPostRequest request, Long userId) {
         if (request.getTeamId() == null) throw new IllegalArgumentException("team id is null");
         if (request.getTitle() == null) throw new IllegalArgumentException("title is null");
         if (repo.existsByTeamIdAndTitle(request.getTeamId(),request.getTitle())) throw new EntityExistsException();
         if (!teamRepo.existsByOwnerIdAndId(userId, request.getTeamId())) throw new IllegalArgumentException();
+        // это бы вынести в конвертер
         Project project = new Project();
         project.setTeamId(request.getTeamId());
         project.setTitle(request.getTitle());
@@ -133,6 +175,26 @@ public class ProjectService {
         upf.setUserId(userId);
         upFolowsRepo.saveAndFlush(upf);
         return getProjectById(project.getId());
+    }
+
+    public Patch createPatch(Long projectId, PatchCreateRequest request, Long userId){
+        if (request.getTitle().isEmpty()) throw new IllegalArgumentException();
+        if (projectId == null) throw new IllegalArgumentException();
+        if (!repo.existsById(projectId)) throw new EntityNotFoundException();
+        if (!repo.existsByOwnerIdAndId(userId, projectId)) throw new IllegalArgumentException();
+        Project project = repo.findById(projectId).orElse(null);
+        if (project == null) throw new EntityNotFoundException();
+        project.setPatchCount(project.getPatchCount() + 1);
+        repo.saveAndFlush(project);
+
+        Patch patch = new Patch();
+        patch.setCreatedAt(LocalDateTime.now());
+        patch.setProjectId(projectId);
+        patch.setTitle(request.getTitle());
+        patch.setDescription(request.getDescription());
+        patch.setLikesCount(0L);
+
+        return patchRepo.saveAndFlush(patch);
     }
 
 }

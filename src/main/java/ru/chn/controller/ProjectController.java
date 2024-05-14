@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.chn.dto.request.PatchCreateRequest;
 import ru.chn.dto.request.ProjectPostRequest;
 import ru.chn.security.jwt.JwtUtils;
 import ru.chn.service.ProjectService;
@@ -32,6 +33,14 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.createProject(body, userId));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{id}/patch")
+    public ResponseEntity<?> createPatch(@PathVariable Long id, @RequestBody PatchCreateRequest body, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        return ResponseEntity.ok(projectService.createPatch(id,body,userId));
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getProjectDetails(@PathVariable Long id, HttpServletRequest request) {
         if (jwtUtils.existAuthToken(request)) {
@@ -48,6 +57,16 @@ public class ProjectController {
             return ResponseEntity.ok(projectService.getAllProjects(tags,userId));
         }
         return ResponseEntity.ok(projectService.getAllProjects(tags));
+    }
+
+    @GetMapping("/{id}/likes")
+    public ResponseEntity<?> getProjectLikes(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectLikes(id));
+    }
+
+    @GetMapping("/{id}/folowers")
+    public ResponseEntity<?> getProjectFolowers(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectFolowers(id));
     }
 
 }
