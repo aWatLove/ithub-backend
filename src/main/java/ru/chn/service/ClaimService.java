@@ -173,7 +173,7 @@ public class ClaimService {
         if(resume == null){
             throw new EntityNotFoundException();
         }
-        if(userId!=resume.getUserId()){
+        if(!Objects.equals(userId, resume.getUserId())){
             throw new IllegalArgumentException();
         }
         repo.deleteById(claimId);
