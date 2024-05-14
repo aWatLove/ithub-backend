@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ProjectTagRepository extends JpaRepository<ProjectsTags, Long> {
     List<ProjectsTags> findAllByProjectId(Long projectId);
+    boolean existsByProjectIdAndTagId(Long projectId, Long tagId);
 }

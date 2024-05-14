@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import ru.chn.dto.ProjectTeamPreviewDTO;
 import ru.chn.dto.request.ProjectPostRequest;
 import ru.chn.dto.response.ProjectDetailsResponse;
+import ru.chn.dto.response.ProjectListResponse;
 import ru.chn.model.*;
 import ru.chn.repository.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,6 +62,39 @@ public class ProjectService {
             pdr.setLiked(true);
         }
         return pdr;
+    }
+
+    public ProjectListResponse getAllProjects(Long[] tagsList) {
+
+        ProjectListResponse plr = new ProjectListResponse();
+        plr.setProjects(new ArrayList<>());
+        List<Long> projectIds = repo.findAllProjectIds();
+        for(Long id: projectIds) {
+            ProjectDetailsResponse pd = getProjectById(id);
+            if (tagsList != null) {
+                for (Long tagId:tagsList) {
+                    if (projectTagRepo.existsByProjectIdAndTagId(id, tagId)) {
+                        plr.getProjects().add(pd);
+                    }
+                }
+                continue;
+            }
+            plr.getProjects().add(pd);
+        }
+        return plr;
+    }
+
+    public ProjectListResponse getAllProjects(Long[] tagsList, Long userId) {
+        ProjectListResponse plr = getAllProjects(tagsList);
+        for (ProjectDetailsResponse pdr : plr.getProjects()) {
+            if (upFolowsRepo.existsByUserIdAndProjectId(userId, pdr.getId())) {
+                pdr.setFolow(true);
+            }
+            if (upLikesRepo.existsByUserIdAndProjectId(userId, pdr.getId())) {
+                pdr.setLiked(true);
+            }
+        }
+        return plr;
     }
 
 
