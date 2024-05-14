@@ -187,6 +187,7 @@ public class ProjectService {
         Project project = repo.findById(projectId).orElse(null);
         if (project == null) throw new EntityNotFoundException();
         project.setPatchCount(project.getPatchCount() + 1);
+        project.setUpdatedAt(LocalDateTime.now());
         repo.saveAndFlush(project);
 
         Patch patch = new Patch();
