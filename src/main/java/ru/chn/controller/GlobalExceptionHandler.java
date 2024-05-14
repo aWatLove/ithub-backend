@@ -25,15 +25,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new MessageResponse("Username already exists"));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<MessageResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().build();
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<MessageResponse> handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.internalServerError().body(new MessageResponse(ex.getMessage().split(":")[0]));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<MessageResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().build();
-    }
+
 
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<MessageResponse> handleEntityExistsException(EntityExistsException ex) {
