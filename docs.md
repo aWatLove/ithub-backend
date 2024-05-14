@@ -157,7 +157,7 @@ output:
 	"folowers_count":4,
 	"avatar":"/avatars/teams/0.jpg",
 	"owner_id":0,
-	"isFolow":true,
+    "is_folow":true,
 	"members":[
 		{
 			"id":0,
@@ -218,21 +218,21 @@ output:
 			"name":"coolTeamName0",
 			"avatar":"/avatars/teams/0.jpg",
 			"folowers_count":3,
-			"isFolow":true
+             "is_folow":true
 		},
 		{
 			"id":1,
 			"name":"coolTeamName1",
 			"avatar":"/avatars/teams/1.jpg",
 			"folowers_count":1,
-			"isFolow":true
+            "is_folow":true
 		},
 		{
 			"id":2,
 			"name":"coolTeamName2",
 			"avatar":"/avatars/teams/2.jpg",
 			"folowers_count":5,
-			"isFolow":false
+            "is_folow":true
 		}
 	]
 }
@@ -294,7 +294,7 @@ output:
 	"avatar":"/avatars/teams/0.jpg",
 	"owner_id":0,
 	"description":"some descrp",
-	"isFolow":true,
+    "is_folow":true,
 	"members":[
 		{
 			"id":0,
@@ -329,7 +329,7 @@ output: `teamDetails`
 	"avatar":"/avatars/teams/new0.jpg",
 	"owner_id":0,
 	"description":"some descrp",
-	"isFolow":true,
+    "is_folow":true,  
 	"members":[
 		{
 			"id":0,
@@ -473,8 +473,8 @@ output:
 	"created_at":"2014-03-12T13:37:27+00:00",
 	"patch_count":4,
 	"updated_at":"2015-03-12T13:37:27+00:00",
-	"isFolow":true,
-	"isLiked":false,
+	"is_folow":true,
+	"is_liked":false,
 	"tags":[
 		{
 			"id":0,
@@ -520,8 +520,8 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolow":true,
-			"isLiked":false,
+			"is_folow":true,
+			"is_liked":false,
 			"tags":[
 				{
 					"id":0,
@@ -555,8 +555,8 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolow":true,
-			"isLiked":false,
+			"is_folow":true,
+			"is_liked":false,
 			"tags":[
 				{
 					"id":0,
@@ -597,8 +597,8 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolow":true,
-			"isLiked":false,
+			"is_folow":true,
+			"is_liked":false,
 			"tags":[
 				{
 					"id":0,
@@ -632,8 +632,8 @@ output:
 			"created_at":"2017-03-12T13:37:27+00:00",
 			"updated_at":"2017-03-12T13:37:27+00:00",
 			"patch_count":3,
-			"isFolow":true,
-			"isLiked":false,
+			"is_folow":true,
+			"is_liked":false,
 			"tags":[
 				{
 					"id":0,
@@ -812,8 +812,8 @@ output:
 	"created_at":"2014-03-12T13:37:27+00:00",
 	"patch_count":4,
 	"updated_at":"2015-03-12T13:37:27+00:00",
-	"isFolow":true,
-	"isLiked":false,
+	"is_folow":true,
+	"is_liked":false,
 	"tags":[
 		{
 			"id":0,
