@@ -32,4 +32,8 @@ public class Claim {
         this.updatedAt = updatedAt;
         this.accepted = accepted;
     }
+
+    public Claim() {
+
+    }
 }
