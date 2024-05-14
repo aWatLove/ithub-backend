@@ -161,4 +161,22 @@ public class TeamService {
         ut.setRole(request.getRole());
         usersTeamsRepo.saveAndFlush(ut);
     }
+
+    public void folowTeam(Long teamId, Long userId) {
+        UsersTeamsFolows utf = utFolowRepo.findByUserIdAndTeamId(userId,teamId).orElse(null);
+        Team team = repo.findTeamById(teamId).orElse(null);
+        if (team == null) throw new EntityNotFoundException();
+        if (utf != null) {
+            utFolowRepo.deleteById(utf.getId());
+            team.setFolowersCount(team.getFolowersCount() - 1);
+            repo.saveAndFlush(team);
+            return;
+        }
+        utf = new UsersTeamsFolows();
+        team.setFolowersCount(team.getFolowersCount() + 1);
+        utf.setTeamId(teamId);
+        utf.setUserId(userId);
+        repo.saveAndFlush(team);
+        utFolowRepo.saveAndFlush(utf);
+    }
 }

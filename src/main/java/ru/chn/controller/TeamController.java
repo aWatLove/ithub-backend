@@ -68,4 +68,12 @@ public class TeamController {
         teamService.updateTeamMemberRole(id, userId, memberId, body);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{id}/folow")
+    public ResponseEntity<?> folowTeam(@PathVariable Long id, HttpServletRequest request) {
+        Long userId = jwtUtils.getUserIdFromJwtToken(jwtUtils.extractJwtToken(request));
+        teamService.folowTeam(id, userId);
+        return ResponseEntity.ok().build();
+    }
 }
