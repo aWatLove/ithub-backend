@@ -39,8 +39,10 @@ public class ResumeService {
     }
 
     // get Resume by Resume id
-    public Optional<Resume> getResumeByResumeId(Long resumeId){
-        return repo.findById(resumeId);
+    public Resume getResumeByResumeId(Long resumeId){
+        Resume resume = repo.findById(resumeId).orElse(null);
+        if( resume == null) throw new EntityNotFoundException();
+        return resume;
     }
 
     // update resume

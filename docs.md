@@ -1184,6 +1184,7 @@ output:
 
 ==todo backend: тут мы должны добавить его в команду==
 Проверить является ли пользователь, который принимает заявку Owner команды
+Заполнить user_team и User_folows ну и естественно изменить claims
 
 input: `claim_id` ?accept={true/false} ?role=(роль в команде)
 output: `200 ok`
