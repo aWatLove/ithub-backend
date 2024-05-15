@@ -39,7 +39,7 @@ public class ClaimController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity<?> getAllTeamsClaims(@PathVariable Long id) {
-        return ResponseEntity.ok(claimService.getAllUsersClaims(id));
+        return ResponseEntity.ok(claimService.getAllTeamsClaims(id));
     }
 
     @PreAuthorize("isAuthenticated()")
